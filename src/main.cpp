@@ -1,15 +1,49 @@
 #include "network.h"
 
+using namespace websockets;
+WebsocketsClient client;
+
+void onMessage(WebsocketsMessage message) {
+    Serial.print("Got Message: ");
+    Serial.println(message.data());
+
+}
+
+void onEventsCallback(WebsocketsEvent event, String data) {
+    if(event == WebsocketsEvent::ConnectionOpened) {
+        Serial.println("Connnection Opened");
+        // Construct the authentication payload
+        DynamicJsonDocument doc(1024);
+        JsonObject d = doc.createNestedObject("d");
+        doc["op"] = 2; // Opcode for IDENTIFY
+        d["token"] = DISCORD_BOT_TOKEN;
+        d["intents"] = 513; // Intents for GUILDS and GUILD_MESSAGES
+        JsonObject properties = d.createNestedObject("properties");
+        properties["$os"] = "linux";
+        properties["$browser"] = "my_esp32_bot";
+        properties["$device"] = "esp32";
+
+        String payload;
+        serializeJson(doc, payload);
+        client.send(payload);
+    } 
+    else if(event == WebsocketsEvent::ConnectionClosed) {
+        Serial.println("Connnection Closed");
+    }
+}
+
 void setup() {
   Serial.begin(115200);
   connectToWifi();
-  setCurrentTime();
+
+  client.onMessage(onMessage);
+  client.onEvent(onEventsCallback);
+
+  // Connect to Discord Gateway
+  client.connect("wss://gateway.discord.gg/?v=9&encoding=json");
+
 }
 
 void loop() {
-  uint64_t messageTime = discordToUnix(1208708398661640212);
-  Serial.println(time(nullptr));
-  Serial.println(timeWithinMinute(time(nullptr), messageTime));
-
-  delay(10000); // Poll every 10 seconds
+  client.poll();
 }
