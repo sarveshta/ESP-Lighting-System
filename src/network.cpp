@@ -34,33 +34,25 @@ void setCurrentTime() {
     Serial.println(time(nullptr));
 }
 
-//Converts Discord snowflake to Unix timestamp
-uint64_t discordToUnix(uint64_t snowflake)
-{
-    printf("Unix timestamp: %llu\n", ((snowflake >> 22) + DISCORD_EPOCH)/1000);
-    return ((snowflake >> 22) + DISCORD_EPOCH)/1000;
-} 
-
-//Checks if message was sent within the last minute
-bool timeWithinMinute(uint64_t currentTime, uint64_t messageTime)
-{
-    return (currentTime - messageTime) < 60;
-}
-
-void getPreviousMessages() {
+//Initializes the previousMessageID with the last message sent in the channel; used when device is reset
+void initPreviousMessage(uint64_t* previousMessageID) {
 
     if(WiFi.status() == WL_CONNECTED)
     {
         HTTPClient http;
-        http.begin("https://discord.com/api/v9/channels/" + String(DISCORD_CHANNEL_ID) + "/messages");
+        http.begin("https://discord.com/api/v9/channels/" + String(DISCORD_CHANNEL_ID) + "/messages?0=/");
         http.addHeader("Authorization", "Bot " + String(DISCORD_BOT_TOKEN));
 
         int httpCode = http.GET();
 
         if (httpCode > 0) {
             String payload = http.getString();
+            JsonDocument doc;
+            deserializeJson(doc, payload);
+            *previousMessageID = doc[0]["id"].as<uint64_t>();
+
             Serial.println(httpCode);
-            Serial.println(payload);
+            Serial.println(previousMessageID[0]);
         } else {
             Serial.println("Error on HTTP request");
         }
