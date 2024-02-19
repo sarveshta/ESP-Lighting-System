@@ -2,6 +2,7 @@
 #define COMMANDS_H
 
 #include "network.h"
+#include "neoPixel.h"
 
 void runCommand(String commandContent, String messageID);
 
