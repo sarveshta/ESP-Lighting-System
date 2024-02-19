@@ -11,5 +11,6 @@
 void connectToWifi();
 void setCurrentTime();
 void initPreviousMessage(uint64_t* previousMessageID);
+bool getCommands(String* commands, uint64_t* previousMessageID, int featchPreviousCommands);
 
 #endif
