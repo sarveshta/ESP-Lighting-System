@@ -5,7 +5,7 @@
 #include "config.h"
 
 void chase(uint32_t c);
-void theaterChase(uint32_t color, int wait);
+void theaterChase(int red, int blue, int green, int wait);
 void rainbow(int wait);
 
 #endif

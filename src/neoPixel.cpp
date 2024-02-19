@@ -2,8 +2,6 @@
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
-
-
 void chase(uint32_t c) {
   for(uint16_t i=0; i<strip.numPixels()+4; i++) {
       strip.setPixelColor(i  , c); // Draw new pixel
@@ -13,7 +11,8 @@ void chase(uint32_t c) {
   }
 }
 
-void theaterChase(uint32_t color, int wait) {
+void theaterChase(int red, int blue, int green, int wait) {
+  uint32_t color = strip.Color(red, blue, green, 50);
   for(int a=0; a<10; a++) {  // Repeat 10 times...
     for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
       strip.clear();         //   Set all pixels in RAM to 0 (off)

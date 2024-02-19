@@ -6,10 +6,16 @@ void runCommand(String commandContent, String messageID)
     commandContent.toLowerCase();
     String commandName = commandContent.substring(1, commandContent.indexOf(' '));
 
-    String commandArgs[4] = {commandContent.substring(commandContent.indexOf(' ') + 1, commandContent.indexOf(' ', commandContent.indexOf(' ') + 1)),
-                            commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1)),
-                            commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1)),
-                            commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1, commandContent.length())};
+    String commandArgs[8] = {
+        commandContent.substring(commandContent.indexOf(' ') + 1, commandContent.indexOf(' ', commandContent.indexOf(' ') + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1)),
+        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1, commandContent.length())
+    };
 
 
     Serial.println("Running Command: " + commandName);
@@ -25,6 +31,10 @@ void runCommand(String commandContent, String messageID)
     else if (commandName == "buzzer")
     {
         turnOnBuzzerCommand(messageID, commandArgs[0],commandArgs[1],commandArgs[2]);
+    }
+    else if (commandName = "theaterchase")
+    {
+        theaterChase(commandArgs[0].toInt(), commandArgs[1].toInt(), commandArgs[2].toInt(), commandArgs[3].toInt());
     }
     else //If the command is not recognised - Reacts with a red X
     {
