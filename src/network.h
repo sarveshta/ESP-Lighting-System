@@ -8,9 +8,15 @@
 
 #include "config.h"
 
+//Structure to store message and messageID together
+struct Message {
+  String content;
+  String messageID;
+};
+
 void connectToWifi();
 void setCurrentTime();
 void initPreviousMessage(uint64_t* previousMessageID);
-bool getCommands(String* commands, uint64_t* previousMessageID, int featchPreviousCommands);
+bool getCommands(struct Message* commands, uint64_t* previousMessageID, int featchPreviousCommands);
 
 #endif

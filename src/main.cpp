@@ -13,17 +13,11 @@ void setup() {
 }
 
 void loop() {
-
-  String commands[featchPreviousCommands] = {};
-  if(getCommands(&commands[0], &previousMessageID, featchPreviousCommands))
+  //Two dimensional array for commands, first column is the message ID and the second is the command
+  Message messages[featchPreviousCommands];
+  if(getCommands(&messages[0], &previousMessageID, featchPreviousCommands))
   {
-    for(int i = 0; i < featchPreviousCommands; i++)
-    {
-      if(commands[i] != "")
-      {
-        Serial.println(commands[i]);
-      }
-    }
+    // Do something with the commands
   }
   delay(10000); // Poll every 10 seconds
 }

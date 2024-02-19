@@ -62,7 +62,7 @@ void initPreviousMessage(uint64_t* previousMessageID) {
 }
 
 //Gets previous commands from the channel after the previousMessageID
-bool getCommands(String* commands, uint64_t* previousMessageID, int featchPreviousCommands)
+bool getCommands(struct Message* commands, uint64_t* previousMessageID, int featchPreviousCommands)
 {
     if(WiFi.status() == WL_CONNECTED)
     {   
@@ -83,7 +83,9 @@ bool getCommands(String* commands, uint64_t* previousMessageID, int featchPrevio
                 // Iterate through each element of the object
                 if(array[i].as<JsonObject>()["content"].as<String>()[0] == '!')
                 {
-                    commands[i] = array[i].as<JsonObject>()["content"].as<String>();
+                    commands[i].messageID = array[i].as<JsonObject>()["id"].as<String>();
+                    commands[i].content = array[i].as<JsonObject>()["content"].as<String>();
+                    Serial.println("Command: " + commands[i].content + " ID: " + commands[i].messageID);
                 } 
             }
             Serial.println("Previous commands fetched");
