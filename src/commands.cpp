@@ -22,6 +22,10 @@ void runCommand(String commandContent, String messageID)
     {
         ledBlinkCommand(messageID, commandArgs[0]);
     }
+    else if (commandName == "buzzer")
+    {
+        turnOnBuzzerCommand(messageID, commandArgs[0],commandArgs[1],commandArgs[2]);
+    }
     else //If the command is not recognised - Reacts with a red X
     {
         unknownCommand(messageID);
@@ -60,6 +64,36 @@ void ledBlinkCommand(String messageID, String duration)
     else
     {
         replyToMessage("Duration too long", messageID);
+        return;
+    }
+}
+
+void turnOnBuzzerCommand(String messageID, String duration, String frequency, String pulse)
+{
+    if(duration.toInt() >= 0 && duration.toInt() <= 10 && frequency.toInt() >= 0 && frequency.toInt() <= 255) //Input validation
+    {
+        pulse.toLowerCase();
+        pinMode(4, OUTPUT);
+        if(pulse == "true" || pulse == "t")
+        {
+            for(int i = 0; i < duration.toInt(); i++)
+            {
+                analogWrite(4, frequency.toInt());
+                delay(500);
+                analogWrite(4,0);
+                delay(500);
+            }
+        }
+        else
+        {
+            analogWrite(4, frequency.toInt());
+            delay(duration.toInt() * 1000);
+            analogWrite(4,0);
+        }
+    }
+    else
+    {
+        replyToMessage("Duration too long or frequency out of bounds", messageID);
         return;
     }
 }
