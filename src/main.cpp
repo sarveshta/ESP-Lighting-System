@@ -19,5 +19,5 @@ void loop() {
   {
     runCommands(&messages[0], featchPreviousCommands);
   }
-  delay(100); // Poll every 5! seconds
+  delay(100); // Poll every 100 milli-seconds
 }
