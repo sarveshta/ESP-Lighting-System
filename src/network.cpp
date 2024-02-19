@@ -93,7 +93,7 @@ bool getCommands(struct Message* commands, uint64_t* previousMessageID, int feat
             Serial.println("Previous commands fetched");
             if(array.size() > 0)
             {
-                *previousMessageID = array[array.size() - 1].as<JsonObject>()["id"].as<uint64_t>();
+                *previousMessageID = array[0].as<JsonObject>()["id"].as<uint64_t>();
                 return true;
             }
 

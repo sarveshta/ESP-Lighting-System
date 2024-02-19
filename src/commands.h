@@ -8,7 +8,6 @@ void runCommand(String commandContent, String messageID);
 void pingCommand(String messageID);
 void unknownCommand(String messageID);
 void acknowledgeCommand(String messageID);
-void ledBlinkCommand(String messageID);
-
+void ledBlinkCommand(String messageID, String duration);
 
 #endif
