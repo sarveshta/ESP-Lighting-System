@@ -1,5 +1,6 @@
 #include "network.h"
 
+
 // Connect to the WiFi network
 void connectToWifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
