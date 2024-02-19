@@ -17,7 +17,7 @@ void loop() {
   Message messages[featchPreviousCommands];
   if(getCommands(&messages[0], &previousMessageID, featchPreviousCommands))
   {
-    // Do something with the commands
+    runCommands(&messages[0], featchPreviousCommands);
   }
-  delay(10000); // Poll every 10 seconds
+  delay(5000); // Poll every 5 seconds
 }

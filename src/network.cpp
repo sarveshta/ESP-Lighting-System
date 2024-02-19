@@ -3,12 +3,12 @@
 // Connect to the WiFi network
 void connectToWifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.println("Connecting to the WiFi network");
+    Serial.print("Connecting to the WiFi network");
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
-        Serial.println(".");
+        Serial.print(".");
     }
-    Serial.println("Connected to the WiFi network");
+    Serial.println("\nConnected to the WiFi network");
   }
 
 //Gets current time from NTP servers
@@ -21,17 +21,17 @@ void setCurrentTime() {
     configTime(0, 0, "time.google.com", "time.nist.gov"); // Use different NTP servers
     time_t now = time(nullptr);
     int timeOut = 0;
-    Serial.println("Waiting for the current time");
+    Serial.print("Waiting for the current time");
     while (now < 24 * 3600) {
-        Serial.println(".");
+        Serial.print(".");
         delay(500);
         now = time(nullptr);
         if (timeOut++ > 20) { // Increment timeout here
-            Serial.println("Failed to get time");
+            Serial.println("\nFailed to get time");
             return;
         }
     }
-    Serial.print("Current time: ");
+    Serial.print("\nCurrent time: ");
     Serial.println(time(nullptr));
 }
 
@@ -44,6 +44,7 @@ void initPreviousMessage(uint64_t* previousMessageID) {
         HTTPClient http;
         http.begin("https://discord.com/api/v9/channels/" + String(DISCORD_CHANNEL_ID) + "/messages?0=/limit=1");
         http.addHeader("Authorization", "Bot " + String(DISCORD_BOT_TOKEN));
+        http.setTimeout(TIMEOUT_DURATION);
 
         int httpCode = http.GET();
 
@@ -70,6 +71,7 @@ bool getCommands(struct Message* commands, uint64_t* previousMessageID, int feat
         HTTPClient http;
         http.begin("https://discord.com/api/v9/channels/" + String(DISCORD_CHANNEL_ID) + "/messages?after=" + String(*previousMessageID) + "&limit=" + String(featchPreviousCommands));
         http.addHeader("Authorization", "Bot " + String(DISCORD_BOT_TOKEN));
+        http.setTimeout(TIMEOUT_DURATION);
 
         int httpCode = http.GET();
 
@@ -92,8 +94,8 @@ bool getCommands(struct Message* commands, uint64_t* previousMessageID, int feat
             if(array.size() > 0)
             {
                 *previousMessageID = array[array.size() - 1].as<JsonObject>()["id"].as<uint64_t>();
+                return true;
             }
-            return true;
 
         } else {
             Serial.println("Error on HTTP request");
@@ -104,3 +106,60 @@ bool getCommands(struct Message* commands, uint64_t* previousMessageID, int feat
     }
     return false;
 }
+
+void replyToMessage(String response, String messageID)
+{
+    if(WiFi.status() == WL_CONNECTED)
+    {
+        Serial.println("Replying to message...");
+        HTTPClient http;
+        http.begin("https://discord.com/api/v9/channels/" + String(DISCORD_CHANNEL_ID) + "/messages");
+        http.addHeader("Authorization", "Bot " + String(DISCORD_BOT_TOKEN));
+        http.addHeader("Content-Type", "application/json");
+        http.setTimeout(TIMEOUT_DURATION);
+
+        String payload = "{\"content\":\"" + response + "\",\"message_reference\":{\"message_id\":\"" + messageID + "\"}}";
+        int httpCode = http.POST(payload);
+
+        if (httpCode > 0) {
+            Serial.println("Reply sent");
+        } else {
+            Serial.println("Error on HTTP request");
+        }
+
+        http.end(); 
+    }
+}
+
+void addReaction(String emoji, String messageID)
+{
+    if(WiFi.status() == WL_CONNECTED)
+    {
+        Serial.println("Adding reaction...");
+        HTTPClient http;
+        http.begin("https://discord.com/api/v9/channels/" + String(DISCORD_CHANNEL_ID) + "/messages/" + messageID + "/reactions/" + emoji + "/%40me");
+        http.addHeader("Authorization", "Bot " + String(DISCORD_BOT_TOKEN));
+        http.setTimeout(TIMEOUT_DURATION);
+        int httpCode = http.PUT("{}");
+        if (httpCode > 0) {
+            Serial.println("Reaction added");
+        } else {
+            Serial.println("Error on HTTP request");
+        }
+
+        http.end(); 
+    }
+}
+
+void runCommands(struct Message* commands, int numberOfCommands)
+{
+    //Runs all commands in reverse order (aka chronological order)
+    for(int i = numberOfCommands; i >= 0; i--)
+    {
+        if(commands[i].content[0] == COMMAND_PREFIX)
+        {
+            runCommand(commands[i].content, commands[i].messageID);
+        }
+    }
+}
+
