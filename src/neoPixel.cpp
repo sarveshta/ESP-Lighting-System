@@ -18,7 +18,7 @@ void theaterChase(void* parameter) {
   int green = commandArgs[2].toInt();
   int wait = commandArgs[3].toInt();
   uint32_t color = strip.Color(red, blue, green, 50);
-  for(int a=0; a<10; a++) {  // Repeat 10 times...
+  for(;;) {  // Repeat infinite times
     for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
       strip.clear();         //   Set all pixels in RAM to 0 (off)
       // 'c' counts up from 'b' to end of strip in steps of 3...
@@ -29,6 +29,8 @@ void theaterChase(void* parameter) {
       vTaskDelay(wait / portTICK_PERIOD_MS);  // Pause for a moment using vTask
     }
   }
+  currentTaskHandle = NULL;
+  vTaskDelete(NULL);
 }
 
 void rainbow(void* parameter) {
@@ -53,6 +55,8 @@ void rainbow(void* parameter) {
     strip.show(); // Update strip with new contents
     vTaskDelay(wait / portTICK_PERIOD_MS);  // Pause for a moment
   }
+  currentTaskHandle = NULL;
+  vTaskDelete(NULL);
 }
 
 void warningLight(void* parameter) {
@@ -94,6 +98,8 @@ void warningLight(void* parameter) {
 void clear(void* parameter){
   strip.clear();
   strip.show();
+  currentTaskHandle = NULL;
+  vTaskDelete(NULL);
 }
 
 

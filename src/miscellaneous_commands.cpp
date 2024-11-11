@@ -3,10 +3,12 @@
 
 void blink(void* parameter)
 {
-        pinMode(2, OUTPUT);
-        digitalWrite(2, HIGH);
-        vTaskDelay(3000 / portTICK_PERIOD_MS);
-        digitalWrite(2, LOW);
+    pinMode(2, OUTPUT);
+    digitalWrite(2, HIGH);
+    vTaskDelay(3000 / portTICK_PERIOD_MS);
+    digitalWrite(2, LOW);
+    currentTaskHandle = NULL;
+    vTaskDelete(NULL);
 
 }
 
@@ -34,5 +36,7 @@ void buzzer(void* parameter)
         vTaskDelay(duration * 1000 / portTICK_PERIOD_MS);
         analogWrite(4,0);
     }
-
+    currentTaskHandle = NULL;
+    vTaskDelete(NULL);
+    
 }
