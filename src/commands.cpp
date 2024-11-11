@@ -32,12 +32,13 @@ void runCommand(String commandContent, String messageID)
     {
         turnOnBuzzerCommand(messageID, commandArgs[0],commandArgs[1],commandArgs[2]);
     }
-    else if (commandName = "theaterchase")
+    else if (commandName == "theaterchase")
     {
         theaterChase(commandArgs[0].toInt(), commandArgs[1].toInt(), commandArgs[2].toInt(), commandArgs[3].toInt());
     }
-    else if (commandName = "warning") {
-        warning(commandArgs[0].toInt());
+    else if (commandName == "warning") {
+        warningLight(commandArgs[0].toInt());
+        
     }
     else //If the command is not recognised - Reacts with a red X
     {
@@ -65,7 +66,7 @@ void acknowledgeCommand(String messageID)
 
 void ledBlinkCommand(String messageID, String duration)
 {
-    if(duration.toInt() > 0 && duration.toInt() < 10) //Input validation
+    if(duration.toInt() > 0 && duration.toInt() <= 10) //Input validation
     {
         acknowledgeCommand(messageID);
         pinMode(2, OUTPUT);
@@ -76,7 +77,7 @@ void ledBlinkCommand(String messageID, String duration)
     }
     else
     {
-        replyToMessage("Duration too long", messageID);
+        replyToMessage("Duration too long, needs to be less than or equal to 10 seconds", messageID);
         return;
     }
 }

@@ -49,8 +49,9 @@ void rainbow(int wait) {
   }
 }
 
-void warning(int stepDelay = 10) {
+void warningLight(int stepDelay) {
   // Gradually turn on all LEDs to full red brightness and then fade out.
+  strip.clear();
   while (true) {
     // Gradually increase brightness
     for (int brightness = 0; brightness <= 255; brightness++) {

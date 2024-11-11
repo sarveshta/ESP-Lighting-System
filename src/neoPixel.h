@@ -7,6 +7,6 @@
 void chase(uint32_t c);
 void theaterChase(int red, int blue, int green, int wait);
 void rainbow(int wait);
-void warning(int stepDelay);
+void warningLight(int stepDelay);
 
 #endif
