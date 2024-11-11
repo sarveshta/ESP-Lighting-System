@@ -71,15 +71,15 @@ void runCommand(String commandContent, String messageID)
         startCommandTask(theaterChase);
     }
     else if (commandName == "warning") {
-        warningLight(commandArgs[0].toInt());
-        
+        acknowledgeCommand();
+        startCommandTask(warningLight);        
     }
     else if (commandName == "off") {
         clear();
     }
     else //If the command is not recognised - Reacts with a red X
     {
-        unknownCommand(globalMessageID);
+        unknownCommand();
     }
 
 }
@@ -99,12 +99,4 @@ void unknownCommand()
 void acknowledgeCommand()
 {
     addReaction("%E2%9C%85", globalMessageID); //React with green checkmark
-}
-
-void ledBlinkCommand()
-{
-}
-
-void turnOnBuzzerCommand()
-{
 }
