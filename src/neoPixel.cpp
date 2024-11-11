@@ -26,7 +26,7 @@ void theaterChase() {
         strip.setPixelColor(c, color); // Set pixel 'c' to value 'color'
       }
       strip.show(); // Update strip with new contents
-      delay(wait);  // Pause for a moment
+      vTaskDelay(wait / portTICK_PERIOD_MS);  // Pause for a moment using vTask
     }
   }
 }
@@ -51,7 +51,7 @@ void rainbow() {
       strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
     }
     strip.show(); // Update strip with new contents
-    delay(wait);  // Pause for a moment
+    vTaskDelay(wait / portTICK_PERIOD_MS);  // Pause for a moment
   }
 }
 
@@ -71,7 +71,7 @@ void warningLight() {
         }
       }
       strip.show(); // Update strip with new contents
-      delay(stepDelay); // Delay between brightness steps
+      vTaskDelay(stepDelay / portTICK_PERIOD_MS); // Delay between brightness steps
     }
     delay(1000);
 
@@ -85,7 +85,7 @@ void warningLight() {
         }
       }
       strip.show(); // Update strip with new contents
-      delay(stepDelay); // Delay between brightness steps
+      vTaskDelay(stepDelay / portTICK_PERIOD_MS); // Delay between brightness steps
     }
     delay(1000);
   //}
