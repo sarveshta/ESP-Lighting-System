@@ -1,6 +1,17 @@
 #include "commands.h"
 String commandArgs[8];
 String globalMessageID;
+TaskHandle_t currentTaskHandle = NULL; // Handle for the active task
+
+void startCommandTask(void (*taskFunction)(void *)) {
+    // If an existing task is running, delete it
+    if (currentTaskHandle != NULL) {
+        vTaskDelete(currentTaskHandle);
+        currentTaskHandle = NULL;
+    }
+    // Create a new task
+    xTaskCreatePinnedToCore(taskFunction, "Command Task", 4096, NULL, 1, &currentTaskHandle, 1);
+}
 
 //All the recognised commands
 void runCommand(String commandContent, String messageID)
@@ -31,19 +42,33 @@ void runCommand(String commandContent, String messageID)
 
     if(commandName == "ping")
     {
-        pingCommand(messageID);
+        pingCommand();
     }
     else if (commandName == "ledblink")
     {
-        ledBlinkCommand(messageID, commandArgs[0]);
+        acknowledgeCommand();
+        startCommandTask(blink);
     }
     else if (commandName == "buzzer")
     {
-        turnOnBuzzerCommand(messageID, commandArgs[0],commandArgs[1],commandArgs[2]);
+        int duration = commandArgs[0].toInt();
+        int frequency = commandArgs[1].toInt();
+
+        if(duration >= 0 && duration <= 10 && frequency >= 0 && frequency <= 255) //Input validation
+        {
+            acknowledgeCommand();
+            startCommandTask(buzzer);
+        }
+        else
+        {
+            replyToMessage("Duration too long or frequency out of bounds", messageID);
+            return;
+        }
     }
     else if (commandName == "theaterchase")
     {
-        theaterChase(commandArgs[0].toInt(), commandArgs[1].toInt(), commandArgs[2].toInt(), commandArgs[3].toInt());
+        acknowledgeCommand();
+        startCommandTask(theaterChase);
     }
     else if (commandName == "warning") {
         warningLight(commandArgs[0].toInt());
@@ -54,72 +79,32 @@ void runCommand(String commandContent, String messageID)
     }
     else //If the command is not recognised - Reacts with a red X
     {
-        unknownCommand(messageID);
+        unknownCommand(globalMessageID);
     }
 
 }
 
-void pingCommand(String messageID)
+void pingCommand()
 {
-    replyToMessage("Pong", messageID); //Respondes with "Pong"
+    replyToMessage("Pong", globalMessageID); //Respondes with "Pong"
 }
 
-void unknownCommand(String messageID)
+void unknownCommand()
 {
-    Serial.println("Unknown Command: " + messageID);
-    addReaction("%E2%9D%8C", messageID); //React with red X
+    Serial.println("Unknown Command: " + globalMessageID);
+    addReaction("%E2%9D%8C", globalMessageID); //React with red X
 
 }
 
-void acknowledgeCommand(String messageID)
+void acknowledgeCommand()
 {
-    addReaction("%E2%9C%85", messageID); //React with green checkmark
+    addReaction("%E2%9C%85", globalMessageID); //React with green checkmark
 }
 
-void ledBlinkCommand(String messageID, String duration)
+void ledBlinkCommand()
 {
-    if(duration.toInt() > 0 && duration.toInt() <= 10) //Input validation
-    {
-        acknowledgeCommand(messageID);
-        pinMode(2, OUTPUT);
-        digitalWrite(2, HIGH);
-        delay(duration.toInt() * 1000);
-        digitalWrite(2, LOW);
-
-    }
-    else
-    {
-        replyToMessage("Duration too long, needs to be less than or equal to 10 seconds", messageID);
-        return;
-    }
 }
 
-void turnOnBuzzerCommand(String messageID, String duration, String frequency, String pulse)
+void turnOnBuzzerCommand()
 {
-    if(duration.toInt() >= 0 && duration.toInt() <= 10 && frequency.toInt() >= 0 && frequency.toInt() <= 255) //Input validation
-    {
-        pulse.toLowerCase();
-        pinMode(4, OUTPUT);
-        if(pulse == "true" || pulse == "t")
-        {
-            for(int i = 0; i < duration.toInt(); i++)
-            {
-                analogWrite(4, frequency.toInt());
-                delay(500);
-                analogWrite(4,0);
-                delay(500);
-            }
-        }
-        else
-        {
-            analogWrite(4, frequency.toInt());
-            delay(duration.toInt() * 1000);
-            analogWrite(4,0);
-        }
-    }
-    else
-    {
-        replyToMessage("Duration too long or frequency out of bounds", messageID);
-        return;
-    }
 }

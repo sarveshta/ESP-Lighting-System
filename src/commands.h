@@ -3,16 +3,18 @@
 
 #include "network.h"
 #include "neoPixel.h"
+#include "miscellaneous_commands.h"
 
 extern String commandArgs[8]; //Array to store command arguments for second core to use
-extern String messageID;
+extern String globalMessageID;
+extern TaskHandle_t currentTaskHandle; // Handle for the active task
 
 void runCommand(String commandContent, String messageID);
 
-void pingCommand(String messageID);
-void unknownCommand(String messageID);
-void acknowledgeCommand(String messageID);
-void ledBlinkCommand(String messageID, String duration);
-void turnOnBuzzerCommand(String messageID, String duration, String frequency, String pulse);
+void pingCommand();
+void unknownCommand();
+void acknowledgeCommand();
+void ledBlinkCommand();
+void turnOnBuzzerCommand();
 
 #endif
