@@ -36,6 +36,9 @@ void runCommand(String commandContent, String messageID)
     {
         theaterChase(commandArgs[0].toInt(), commandArgs[1].toInt(), commandArgs[2].toInt(), commandArgs[3].toInt());
     }
+    else if (commandName = "warning") {
+        warning(commandArgs[0].toInt());
+    }
     else //If the command is not recognised - Reacts with a red X
     {
         unknownCommand(messageID);

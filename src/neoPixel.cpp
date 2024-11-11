@@ -48,3 +48,27 @@ void rainbow(int wait) {
     delay(wait);  // Pause for a moment
   }
 }
+
+void warning(int stepDelay = 10) {
+  // Gradually turn on all LEDs to full red brightness and then fade out.
+  while (true) {
+    // Gradually increase brightness
+    for (int brightness = 0; brightness <= 255; brightness++) {
+      for (int i = 0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, strip.Color(brightness, 0, 0)); // Gradually increasing red brightness
+      }
+      strip.show(); // Update strip with new contents
+      delay(stepDelay); // Delay between brightness steps
+    }
+
+    // Gradually decrease brightness
+    for (int brightness = 255; brightness >= 0; brightness--) {
+      for (int i = 0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, strip.Color(brightness, 0, 0)); // Gradually decreasing red brightness
+      }
+      strip.show(); // Update strip with new contents
+      delay(stepDelay); // Delay between brightness steps
+    }
+  }
+}
+
