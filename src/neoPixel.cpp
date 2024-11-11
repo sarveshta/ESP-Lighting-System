@@ -73,7 +73,7 @@ void warningLight(void* parameter) {
       strip.show(); // Update strip with new contents
       vTaskDelay(stepDelay / portTICK_PERIOD_MS); // Delay between brightness steps
     }
-    delay(1000);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
 
     // Gradually decrease red brightness and increase blue brightness
     for (int brightness = maxBrightness; brightness >= 0; brightness--) {
@@ -87,7 +87,7 @@ void warningLight(void* parameter) {
       strip.show(); // Update strip with new contents
       vTaskDelay(stepDelay / portTICK_PERIOD_MS); // Delay between brightness steps
     }
-    delay(1000);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 

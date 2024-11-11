@@ -5,7 +5,7 @@ void blink(void* parameter)
 {
         pinMode(2, OUTPUT);
         digitalWrite(2, HIGH);
-        delay(3000);
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
         digitalWrite(2, LOW);
 
 }
@@ -23,15 +23,15 @@ void buzzer(void* parameter)
         for(int i = 0; i < duration; i++)
         {
             analogWrite(4, frequency);
-            delay(500);
+            vTaskDelay(500 / portTICK_PERIOD_MS);
             analogWrite(4,0);
-            delay(500);
+            vTaskDelay(500 / portTICK_PERIOD_MS);
         }
     }
     else
     {
         analogWrite(4, frequency);
-        delay(duration * 1000);
+        vTaskDelay(duration * 1000 / portTICK_PERIOD_MS);
         analogWrite(4,0);
     }
 
