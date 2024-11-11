@@ -12,7 +12,11 @@ void chase(uint32_t c) {
   }
 }
 
-void theaterChase(int red, int blue, int green, int wait) {
+void theaterChase() {
+  int red = commandArgs[0].toInt();
+  int blue = commandArgs[1].toInt();
+  int green = commandArgs[2].toInt();
+  int wait = commandArgs[3].toInt();
   uint32_t color = strip.Color(red, blue, green, 50);
   for(int a=0; a<10; a++) {  // Repeat 10 times...
     for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
@@ -27,7 +31,8 @@ void theaterChase(int red, int blue, int green, int wait) {
   }
 }
 
-void rainbow(int wait) {
+void rainbow() {
+  int wait = commandArgs[0].toInt();
   // Hue of first pixel runs 3 complete loops through the color wheel.
   // Color wheel has a range of 65536 but it's OK if we roll over, so
   // just count from 0 to 3*65536. Adding 256 to firstPixelHue each time
@@ -50,7 +55,8 @@ void rainbow(int wait) {
   }
 }
 
-void warningLight(int maxBrightness = 100) {
+void warningLight() {
+  int maxBrightness = commandArgs[0].toInt();
   int stepDelay = 10;
   // Gradually turn on every other LED to full red brightness while the others fade to blue and then vice versa.
   strip.clear();
@@ -87,6 +93,7 @@ void warningLight(int maxBrightness = 100) {
 
 void clear(){
   strip.clear();
+  strip.show();
 }
 
 
