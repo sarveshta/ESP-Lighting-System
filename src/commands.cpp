@@ -1,21 +1,30 @@
 #include "commands.h"
+String commandArgs[8];
+String globalMessageID;
 
 //All the recognised commands
 void runCommand(String commandContent, String messageID)
 {
+    globalMessageID = messageID;
     commandContent.toLowerCase();
     String commandName = commandContent.substring(1, commandContent.indexOf(' '));
 
-    String commandArgs[8] = {
-        commandContent.substring(commandContent.indexOf(' ') + 1, commandContent.indexOf(' ', commandContent.indexOf(' ') + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1, commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1)),
-        commandContent.substring(commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ', commandContent.indexOf(' ') + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1, commandContent.length())
-    };
+    // Reset commandArgs to empty strings
+    for (int i = 0; i < 8; i++) {
+        commandArgs[i] = "";
+    }
+
+    // Parse command arguments dynamically
+    int currentIndex = commandContent.indexOf(' ') + 1;
+    for (int i = 0; i < 8; i++) {
+        int nextSpace = commandContent.indexOf(' ', currentIndex);
+        if (nextSpace == -1) {
+            commandArgs[i] = commandContent.substring(currentIndex);
+            break;
+        }
+        commandArgs[i] = commandContent.substring(currentIndex, nextSpace);
+        currentIndex = nextSpace + 1;
+    }
 
 
     Serial.println("Running Command: " + commandName);

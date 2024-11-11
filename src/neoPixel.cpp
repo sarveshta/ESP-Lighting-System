@@ -1,4 +1,5 @@
 #include "neoPixel.h"
+#include "commands.h"
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 

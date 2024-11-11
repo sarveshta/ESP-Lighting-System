@@ -4,6 +4,9 @@
 #include "network.h"
 #include "neoPixel.h"
 
+extern String commandArgs[8]; //Array to store command arguments for second core to use
+extern String messageID;
+
 void runCommand(String commandContent, String messageID);
 
 void pingCommand(String messageID);
