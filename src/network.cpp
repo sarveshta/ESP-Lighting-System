@@ -48,12 +48,12 @@ void initPreviousMessage(uint64_t* previousMessageID) {
         http.setTimeout(TIMEOUT_DURATION);
 
         int httpCode = http.GET();
-
         if (httpCode > 0) {
             String payload = http.getString();
             JsonDocument doc;
             deserializeJson(doc, payload);
             *previousMessageID = doc[0]["id"].as<uint64_t>();
+            Serial.println("Previous message fetched and has ID: " + String(*previousMessageID));
 
         } else {
             Serial.println("Error on HTTP request");
