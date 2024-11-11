@@ -1,7 +1,7 @@
 #include "miscellaneous_commands.h"
 #include "commands.h"
 
-void blink()
+void blink(void* parameter)
 {
         pinMode(2, OUTPUT);
         digitalWrite(2, HIGH);
@@ -10,7 +10,7 @@ void blink()
 
 }
 
-void buzzer()
+void buzzer(void* parameter)
 {
     int duration = commandArgs[0].toInt();
     int frequency = commandArgs[1].toInt();

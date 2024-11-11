@@ -12,7 +12,7 @@ void chase(uint32_t c) {
   }
 }
 
-void theaterChase() {
+void theaterChase(void* parameter) {
   int red = commandArgs[0].toInt();
   int blue = commandArgs[1].toInt();
   int green = commandArgs[2].toInt();
@@ -31,7 +31,7 @@ void theaterChase() {
   }
 }
 
-void rainbow() {
+void rainbow(void* parameter) {
   int wait = commandArgs[0].toInt();
   // Hue of first pixel runs 3 complete loops through the color wheel.
   // Color wheel has a range of 65536 but it's OK if we roll over, so
@@ -55,12 +55,12 @@ void rainbow() {
   }
 }
 
-void warningLight() {
+void warningLight(void* parameter) {
   int maxBrightness = commandArgs[0].toInt();
   int stepDelay = 10;
   // Gradually turn on every other LED to full red brightness while the others fade to blue and then vice versa.
   strip.clear();
-  //while (true) {
+  while (true) {
     // Gradually increase red brightness and decrease blue brightness
     for (int brightness = 0; brightness <= maxBrightness; brightness++) {
       for (int i = 0; i < strip.numPixels(); i++) {
@@ -88,10 +88,10 @@ void warningLight() {
       vTaskDelay(stepDelay / portTICK_PERIOD_MS); // Delay between brightness steps
     }
     delay(1000);
-  //}
+  }
 }
 
-void clear(){
+void clear(void* parameter){
   strip.clear();
   strip.show();
 }

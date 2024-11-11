@@ -74,8 +74,9 @@ void runCommand(String commandContent, String messageID)
         acknowledgeCommand();
         startCommandTask(warningLight);        
     }
-    else if (commandName == "off") {
-        clear();
+    else if (commandName == "clear") {
+        acknowledgeCommand();
+        startCommandTask(clear);
     }
     else //If the command is not recognised - Reacts with a red X
     {
