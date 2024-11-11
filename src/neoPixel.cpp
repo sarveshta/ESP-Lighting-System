@@ -49,27 +49,43 @@ void rainbow(int wait) {
   }
 }
 
-void warningLight(int stepDelay) {
-  // Gradually turn on all LEDs to full red brightness and then fade out.
+void warningLight(int maxBrightness = 100) {
+  int stepDelay = 10;
+  // Gradually turn on every other LED to full red brightness while the others fade to blue and then vice versa.
   strip.clear();
-  while (true) {
-    // Gradually increase brightness
-    for (int brightness = 0; brightness <= 255; brightness++) {
+  //while (true) {
+    // Gradually increase red brightness and decrease blue brightness
+    for (int brightness = 0; brightness <= maxBrightness; brightness++) {
       for (int i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(brightness, 0, 0)); // Gradually increasing red brightness
+        if (i % 2 == 0) { // Only every other LED
+          strip.setPixelColor(i, strip.Color(brightness, 0, maxBrightness - brightness)); // Gradually increasing red, decreasing blue
+        } else {
+          strip.setPixelColor(i, strip.Color(maxBrightness - brightness, 0, brightness)); // Gradually increasing blue, decreasing red
+        }
       }
       strip.show(); // Update strip with new contents
       delay(stepDelay); // Delay between brightness steps
     }
+    delay(1000);
 
-    // Gradually decrease brightness
-    for (int brightness = 255; brightness >= 0; brightness--) {
+    // Gradually decrease red brightness and increase blue brightness
+    for (int brightness = maxBrightness; brightness >= 0; brightness--) {
       for (int i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(brightness, 0, 0)); // Gradually decreasing red brightness
+        if (i % 2 == 0) { // Only every other LED
+          strip.setPixelColor(i, strip.Color(brightness, 0, maxBrightness - brightness)); // Gradually decreasing red, increasing blue
+        } else {
+          strip.setPixelColor(i, strip.Color(maxBrightness - brightness, 0, brightness)); // Gradually decreasing blue, decreasing red
+        }
       }
       strip.show(); // Update strip with new contents
       delay(stepDelay); // Delay between brightness steps
     }
-  }
+    delay(1000);
+  //}
 }
+
+void clear(){
+  strip.clear();
+}
+
 
