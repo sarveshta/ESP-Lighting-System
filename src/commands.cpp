@@ -54,7 +54,7 @@ void runCommand(String commandContent, String messageID)
         int duration = commandArgs[0].toInt();
         int frequency = commandArgs[1].toInt();
 
-        if(duration >= 0 && duration <= 10 && frequency >= 0 && frequency <= 255) //Input validation
+        if(duration >= 0 && duration <= 10 && frequency >= 0 && frequency <= 20000) //Input validation
         {
             acknowledgeCommand();
             startCommandTask(buzzer);
