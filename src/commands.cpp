@@ -40,7 +40,7 @@ void runCommand(String commandContent, String messageID)
         warningLight(commandArgs[0].toInt());
         
     }
-    else if (commandName == "off") {
+    else if (commandName == "clear") {
         clear();
     }
     else //If the command is not recognised - Reacts with a red X

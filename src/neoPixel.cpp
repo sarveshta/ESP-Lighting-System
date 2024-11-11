@@ -86,6 +86,7 @@ void warningLight(int maxBrightness = 100) {
 
 void clear(){
   strip.clear();
+  strip.show();
 }
 
 
