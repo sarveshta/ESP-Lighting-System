@@ -101,5 +101,3 @@ void clear(void* parameter){
   currentTaskHandle = NULL;
   vTaskDelete(NULL);
 }
-
-
