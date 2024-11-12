@@ -24,17 +24,17 @@ void buzzer(void* parameter)
     {
         for(int i = 0; i < duration; i++)
         {
-            tone(4, frequency, 0);
+            analogWrite(4, frequency);
             vTaskDelay(500 / portTICK_PERIOD_MS);
-            tone(4, frequency, 0);
+            analogWrite(4, 0);
             vTaskDelay(500 / portTICK_PERIOD_MS);
         }
     }
     else
     {
-        tone(4, frequency, duration * 1000);
+        analogWrite(4, frequency);
         vTaskDelay(duration * 1000 / portTICK_PERIOD_MS);
-        tone(4, 0, duration * 1000);
+        analogWrite(4, frequency);
     }
     currentTaskHandle = NULL;
     vTaskDelete(NULL);
